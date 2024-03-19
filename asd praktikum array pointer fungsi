@@ -1,0 +1,106 @@
+no 1
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int card_value(char card) {
+    if (card >= '2' && card <= '9') {
+        return card - '0';
+    } else if (card == 'J') {
+        return 11;
+    } else if (card == 'Q') {
+        return 12;
+    } else if (card == 'K') {
+        return 13;
+    }
+    return -1;
+}
+
+int min_swaps_to_sort(char cards[], int n) {
+    int swaps = 0;
+    for (int i = 0; i < n - 1; i++) {
+        int min_idx = i;
+        for (int j = i + 1; j < n; j++) {
+            if (card_value(cards[j]) < card_value(cards[min_idx])) {
+                min_idx = j;
+            }
+        }
+        if (min_idx != i) {
+            char temp = cards[i];
+            cards[i] = cards[min_idx];
+            cards[min_idx] = temp;
+            swaps++;
+            printf("Pertukaran %d: %s\n", swaps, cards);
+        }
+    }
+    return swaps;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    char cards[n+1]; 
+    scanf(" %[^\n]", cards);
+
+    int min_swaps = min_swaps_to_sort(cards, n);
+    printf("Jumlah minimal langkah pertukaran: %d\n", min_swaps);
+
+    return 0;
+}
+
+
+no 2
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Fungsi untuk menandai posisi yang dapat dicapai oleh bidak kuda
+void koboImaginaryChess(int i, int j, int size, int *chessBoard) {
+    // Membuat array 2D untuk papan catur imaginernya
+    int board[size][size];
+
+    // Inisialisasi semua elemen array dengan nilai 0
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            board[x][y] = 0;
+        }
+    }
+
+    // Mengatur nilai 1 pada posisi yang dapat dicapai oleh bidak kuda
+    if (i - 2 >= 0 && j - 1 >= 0)
+        board[i - 2][j - 1] = 1;
+    if (i - 2 >= 0 && j + 1 < size)
+        board[i - 2][j + 1] = 1;
+    if (i - 1 >= 0 && j - 2 >= 0)
+        board[i - 1][j - 2] = 1;
+    if (i - 1 >= 0 && j + 2 < size)
+        board[i - 1][j + 2] = 1;
+    if (i + 1 < size && j - 2 >= 0)
+        board[i + 1][j - 2] = 1;
+    if (i + 1 < size && j + 2 < size)
+        board[i + 1][j + 2] = 1;
+    if (i + 2 < size && j - 1 >= 0)
+        board[i + 2][j - 1] = 1;
+    if (i + 2 < size && j + 1 < size)
+        board[i + 2][j + 1] = 1;
+
+    // Menampilkan papan catur imaginernya
+    for (int x = 0; x < size; x++) {
+        for (int y = 0; y < size; y++) {
+            printf("%d ", board[x][y]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int i, j;
+    // Membaca input nilai i dan j
+    scanf("%d %d", &i, &j);
+
+    // Memanggil fungsi koboImaginaryChess
+    koboImaginaryChess(i, j, 8, NULL);
+
+    return 0;
+}
